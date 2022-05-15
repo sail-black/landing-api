@@ -34,6 +34,9 @@ jobs:
       - run: tox
   coverage:
     name: coverage
+     matrix:
+        os: [ubuntu-latest]
+        python: ['3.9']
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
