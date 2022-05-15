@@ -33,7 +33,7 @@ jobs:
       - run: pip install tox tox-gh-actions
       - run: tox
   coverage:
-    uns-on: ubuntu-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [3.9]
