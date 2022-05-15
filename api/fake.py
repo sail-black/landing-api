@@ -15,7 +15,7 @@ def users(num):  # pragma: no cover
     """Create the given number of fake users."""
     try:
         db.create_all()
-    except:
+    except BaseException:
         print("yeah")
     users = []
     for i in range(num):
