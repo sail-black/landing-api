@@ -1,7 +1,4 @@
 from tests.base_test_case import BaseTestCase
-from datetime import datetime, timedelta
-import sqlalchemy as sqla
-import pytest
 from api.app import db
 from api.models import Newsletter
 from tests.base_test_case import BaseTestCase
