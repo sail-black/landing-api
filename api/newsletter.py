@@ -37,6 +37,24 @@ def newsletter_conformation(args):
     return {"user": args["email"], "newsletter_status": False, "error": error}
 
 
+@newsletter.route("/newsletter/<auth>", methods=["POST"])
+@other_responses({400: "Invalid newsletter token"})
+def newsletter_conform(auth):
+    """Confirm the newsletter subscription"""
+    s = Newsletter.get_seralizer()
+    try:
+        email = s.loads(auth, salt="email-confirm", max_age=3600)
+        u = db.session.scalar(Newsletter.select().filter_by(email=email))
+        u.confirmed = True
+        u.ping()
+        db.session.add(u)
+        db.session.commit()
+        send_email(email, "Welcome to the crew!", "conform")
+    except SignatureExpired:
+        return "<h1>The token is expired!</h1>"
+    return render_template_string("<h1>Thank you for signing up!</h1>")
+
+
 @newsletter.route("/newsletter/leave", methods=["GET", "POST"])
 @body(PasswordResetRequestSchema)
 def newsletter_leave(args):
@@ -75,21 +93,3 @@ def newsletter_leave_conform(auth):
     return render_template_string(
         "<h1>Thank you for joining us for a bit. We hope you come back. We love you!</h1>"
     )
-
-
-@newsletter.route("/newsletter/<auth>")
-@other_responses({400: "Invalid newsletter token"})
-def newsletter_conform(auth):
-    """Confirm the newsletter subscription"""
-    s = Newsletter.get_seralizer()
-    try:
-        email = s.loads(auth, salt="email-confirm", max_age=3600)
-        u = db.session.scalar(Newsletter.select().filter_by(email=email))
-        u.confirmed = True
-        u.ping()
-        db.session.add(u)
-        db.session.commit()
-        send_email(email, "Welcome to the crew!", "conform")
-    except SignatureExpired:
-        return "<h1>The token is expired!</h1>"
-    return render_template_string("<h1>Thank you for signing up!</h1>")
