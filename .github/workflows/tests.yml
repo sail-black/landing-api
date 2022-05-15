@@ -40,11 +40,11 @@ jobs:
       - name: Bash
         shell: bash -l {0}
         run: |
-          pip install . 
+          pip install -r requirements.txt 
       - name: PowerShell Core
         shell: pwsh
         run: |
-          pip install . 
+          pip install -r requirements.txt 
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
