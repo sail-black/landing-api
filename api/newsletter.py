@@ -47,6 +47,9 @@ def newsletter_leave(args):
     token = s.dumps(email, salt="sign-off-confirm")
     link = url_for("index", _external=True) + "api/newsletter/leave/" + token
     u.leave_token = token
+    u.ping()
+    db.session.add(u)
+    db.session.commit()
     send_email(
         email, "Confirm newsletter-sign-off", "conform_signoff", token=token, url=link
     )
@@ -63,6 +66,7 @@ def newsletter_leave_conform(auth):
         email = s.loads(auth, salt="sign-off-confirm", max_age=3600)
         u = db.session.scalar(Newsletter.select().filter_by(email=email))
         u.confirmed = False
+        u.ping()
         db.session.add(u)
         db.session.commit()
         send_email(email, "We are sad you left!", "sign-off")
