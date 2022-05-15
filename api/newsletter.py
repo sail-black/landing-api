@@ -26,6 +26,7 @@ def newsletter_conformation(args):
     link = url_for("index", _external=True) + "api/newsletter/" + token
     send_email(email, "Confirm subscription", "newsletter", token=token, url=link)
     u.confirmed = False
+    u.ping()
     error = None
     try:
         db.session.add(u)
@@ -60,8 +61,8 @@ def newsletter_leave_conform(auth):
     try:
         email = s.loads(auth, salt="sign-off-confirm", max_age=3600)
         u = db.session.scalar(Newsletter.select().filter_by(email=email))
-        db.session.delete(u)
-        db.session.commit()
+        u.confirmed = False
+        db.session.add(u)
         db.session.commit()
         send_email(email, "We are sad you left!", "sign-off")
     except SignatureExpired:
@@ -80,6 +81,7 @@ def newsletter_conform(auth):
         email = s.loads(auth, salt="email-confirm", max_age=3600)
         u = db.session.scalar(Newsletter.select().filter_by(email=email))
         u.confirmed = True
+        u.ping()
         db.session.add(u)
         db.session.commit()
         send_email(email, "Welcome to the crew!", "conform")

@@ -53,6 +53,7 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test with pytest and check code coverage
         run: |
+          flask run
           pytest --cov tests/
       - name: Upload coverage to codecov.io
         run: bash <(curl -s https://codecov.io/bash)
