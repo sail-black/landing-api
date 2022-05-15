@@ -33,6 +33,11 @@ jobs:
       - run: pip install tox tox-gh-actions
       - run: tox
   coverage:
+    uns-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9]
+      fail-fast: false
     steps:
       - name: Test with pytest and check code coverage
         run: pytest --cov tests/
