@@ -67,6 +67,8 @@ class Newsletter(Updateable, db.Model):
     sign_up = sqla.Column(sqla.DateTime, default=datetime.utcnow)
     confirmed = sqla.Column(sqla.Boolean)
     updated = sqla.Column(sqla.DateTime, default=datetime.utcnow)
+    confirm_token = sqla.Column(sqla.String(64), nullable=False, index=True)
+    leave_token = sqla.Column(sqla.String(64), nullable=False, index=True)
 
     def get_seralizer():
         serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])

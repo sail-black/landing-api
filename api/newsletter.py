@@ -26,6 +26,7 @@ def newsletter_conformation(args):
     link = url_for("index", _external=True) + "api/newsletter/" + token
     send_email(email, "Confirm subscription", "newsletter", token=token, url=link)
     u.confirmed = False
+    u.confirm_token = token
     u.ping()
     error = None
     try:
@@ -45,7 +46,7 @@ def newsletter_leave(args):
     email = u.email
     token = s.dumps(email, salt="sign-off-confirm")
     link = url_for("index", _external=True) + "api/newsletter/leave/" + token
-
+    u.leave_token = token
     send_email(
         email, "Confirm newsletter-sign-off", "conform_signoff", token=token, url=link
     )
