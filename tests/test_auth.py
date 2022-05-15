@@ -208,11 +208,10 @@ class AuthTests(BaseTestCase):
         )
         reset_token = send_email.call_args[1]["token"]
         reset_url = send_email.call_args[1]["url"]
-        assert reset_url == "http://localhost:3000/reset?token=" + reset_token
+        assert reset_url == "http://localhost:5000/reset?token=" + reset_token
 
         rv = self.client.put(
-            "/api/tokens/reset",
-            json={"token": reset_token + "x", "new_password": "bar"},
+            "/api/tokens/reset", json={"token": reset_token, "new_password": "bar"},
         )
         assert rv.status_code == 400
 

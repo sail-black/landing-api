@@ -66,10 +66,14 @@ class Newsletter(Updateable, db.Model):
     email = sqla.Column(sqla.String(120), index=True, unique=True, nullable=False)
     sign_up = sqla.Column(sqla.DateTime, default=datetime.utcnow)
     confirmed = sqla.Column(sqla.Boolean)
+    updated = sqla.Column(sqla.DateTime, default=datetime.utcnow)
 
     def get_seralizer():
         serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
         return serializer
+
+    def ping(self):
+        self.updated = datetime.utcnow()
 
 
 class User(Updateable, db.Model):
@@ -82,7 +86,6 @@ class User(Updateable, db.Model):
     about_me = sqla.Column(sqla.String(140))
     first_seen = sqla.Column(sqla.DateTime, default=datetime.utcnow)
     last_seen = sqla.Column(sqla.DateTime, default=datetime.utcnow)
-    newsletter = sqla.Column(sqla.Boolean)
     tokens = sqla_orm.relationship("Token", back_populates="user", lazy="noload")
     posts = sqla_orm.relationship("Post", back_populates="author", lazy="noload")
 

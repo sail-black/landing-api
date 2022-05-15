@@ -94,6 +94,6 @@ werkzeug==2.1.0
     # via flask
 pytest 
 pytest-cov 
-
+psycopg2 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
