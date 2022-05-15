@@ -33,11 +33,11 @@ jobs:
       - run: pip install tox tox-gh-actions
       - run: tox
   coverage:
+    steps:
       - name: Test with pytest and check code coverage
-        run: |
-          pytest --cov tests/
+        run: pytest --cov tests/
       - name: Upload coverage to codecov.io
         run: bash <(curl -s https://codecov.io/bash)
         if: always()
         env:
-         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
