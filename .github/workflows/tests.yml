@@ -34,7 +34,7 @@ jobs:
       - run: tox
   coverage:
     name: coverage
-     matrix:
+    matrix:
         os: [ubuntu-latest]
         python: ['3.9']
     runs-on: ${{ matrix.os }}
