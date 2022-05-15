@@ -1,8 +1,9 @@
 # microblog-api
 
 [![Build status](https://github.com/miguelgrinberg/microblog-api/workflows/build/badge.svg)](https://github.com/miguelgrinberg/microblog-api/actions) [![codecov](https://codecov.io/gh/miguelgrinberg/microblog-api/branch/main/graph/badge.svg)](https://codecov.io/gh/miguelgrinberg/microblog-api)
-
-A modern (as of 2022) Flask API back end.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Style Black](https://warehouse-camo.ingress.cmh1.psfhosted.org/fbfdc7754183ecf079bc71ddeabaf88f6cbc5c00/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f636f64652532307374796c652d626c61636b2d3030303030302e737667) 
+A modern (as of 2022) Flask API back end for building landing pages for SaaS and newsletter sign up.
 
 ## Deploy to Heroku
 
