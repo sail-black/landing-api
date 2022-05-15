@@ -21,39 +21,48 @@ def create_app(config_class=Config):
 
     # extensions
     from api import models
+
     db.init_app(app)
     migrate.init_app(app, db)
     ma.init_app(app)
-    if app.config['USE_CORS']:  # pragma: no branch
+    if app.config["USE_CORS"]:  # pragma: no branch
         cors.init_app(app)
     mail.init_app(app)
     apifairy.init_app(app)
 
     # blueprints
     from api.errors import errors
+
     app.register_blueprint(errors)
     from api.tokens import tokens
-    app.register_blueprint(tokens, url_prefix='/api')
+
+    app.register_blueprint(tokens, url_prefix="/api")
     from api.users import users
-    app.register_blueprint(users, url_prefix='/api')
+
+    app.register_blueprint(users, url_prefix="/api")
+    from api.newsletter import newsletter
+
+    app.register_blueprint(newsletter, url_prefix="/api")
     from api.posts import posts
-    app.register_blueprint(posts, url_prefix='/api')
+
+    app.register_blueprint(posts, url_prefix="/api")
     from api.fake import fake
+
     app.register_blueprint(fake)
 
     # define the shell context
     @app.shell_context_processor
     def shell_context():  # pragma: no cover
-        ctx = {'db': db}
+        ctx = {"db": db}
         for attr in dir(models):
             model = getattr(models, attr)
-            if hasattr(model, '__bases__') and \
-                    db.Model in getattr(model, '__bases__'):
+            if hasattr(model, "__bases__") and db.Model in getattr(model, "__bases__"):
                 ctx[attr] = model
         return ctx
 
-    @app.route('/')
+    @app.route("/")
     def index():  # pragma: no cover
-        return redirect(url_for('apifairy.docs'))
+        return redirect(url_for("apifairy.docs"))
 
+    db.create_all()
     return app

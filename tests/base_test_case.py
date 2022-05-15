@@ -5,10 +5,10 @@ from config import Config
 
 
 class TestConfig(Config):
-    SERVER_NAME = 'localhost:5000'
+    SERVER_NAME = "localhost:5000"
     TESTING = True
     DISABLE_AUTH = True
-    ALCHEMICAL_DATABASE_URL = 'sqlite://'
+    ALCHEMICAL_DATABASE_URL = "sqlite://"
 
 
 class TestConfigWithAuth(TestConfig):
@@ -24,7 +24,7 @@ class BaseTestCase(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
-        user = User(username='test', email='test@example.com', password='foo')
+        user = User(username="test", email="test@example.com", password="foo")
         db.session.add(user)
         db.session.commit()
         self.client = self.app.test_client()

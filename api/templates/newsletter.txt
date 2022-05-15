@@ -1,0 +1,13 @@
+Dear {{ username }},
+
+To confirm your newsletter sign-up follow this link:
+
+{{ url }}
+
+If you have not requested the newsletter simply ignore this message.
+
+Sincerely,
+
+The Sail.Black Crew
+
+Note: replies to this email address are not monitored.

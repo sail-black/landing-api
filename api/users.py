@@ -8,13 +8,13 @@ from api.schemas import UserSchema, UpdateUserSchema, EmptySchema
 from api.auth import token_auth
 from api.decorators import paginated_response
 
-users = Blueprint('users', __name__)
+users = Blueprint("users", __name__)
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 update_user_schema = UpdateUserSchema(partial=True)
 
 
-@users.route('/users', methods=['POST'])
+@users.route("/users", methods=["POST"])
 @body(user_schema)
 @response(user_schema, 201)
 def new(args):
@@ -25,7 +25,7 @@ def new(args):
     return user
 
 
-@users.route('/users', methods=['GET'])
+@users.route("/users", methods=["GET"])
 @authenticate(token_auth)
 @paginated_response(users_schema)
 def all():
@@ -33,26 +33,25 @@ def all():
     return User.select()
 
 
-@users.route('/users/<int:id>', methods=['GET'])
+@users.route("/users/<int:id>", methods=["GET"])
 @authenticate(token_auth)
 @response(user_schema)
-@other_responses({404: 'User not found'})
+@other_responses({404: "User not found"})
 def get(id):
     """Retrieve a user by id"""
     return db.session.get(User, id) or abort(404)
 
 
-@users.route('/users/<username>', methods=['GET'])
+@users.route("/users/<username>", methods=["GET"])
 @authenticate(token_auth)
 @response(user_schema)
-@other_responses({404: 'User not found'})
+@other_responses({404: "User not found"})
 def get_by_username(username):
     """Retrieve a user by username"""
-    return db.session.scalar(User.select().filter_by(username=username)) or \
-        abort(404)
+    return db.session.scalar(User.select().filter_by(username=username)) or abort(404)
 
 
-@users.route('/me', methods=['GET'])
+@users.route("/me", methods=["GET"])
 @authenticate(token_auth)
 @response(user_schema)
 def me():
@@ -60,23 +59,24 @@ def me():
     return token_auth.current_user()
 
 
-@users.route('/me', methods=['PUT'])
+@users.route("/me", methods=["PUT"])
 @authenticate(token_auth)
 @body(update_user_schema)
 @response(user_schema)
-@other_responses({403: 'Cannot use a refreshed token for this operation.'})
+@other_responses({403: "Cannot use a refreshed token for this operation."})
 def put(data):
     """Edit user information"""
     user = token_auth.current_user()
-    if 'password' in data and ('old_password' not in data or
-                               not user.verify_password(data['old_password'])):
+    if "password" in data and (
+        "old_password" not in data or not user.verify_password(data["old_password"])
+    ):
         abort(400)
     user.update(data)
     db.session.commit()
     return user
 
 
-@users.route('/me/following', methods=['GET'])
+@users.route("/me/following", methods=["GET"])
 @authenticate(token_auth)
 @paginated_response(users_schema, order_by=User.username)
 def my_following():
@@ -85,7 +85,7 @@ def my_following():
     return user.following_select()
 
 
-@users.route('/me/followers', methods=['GET'])
+@users.route("/me/followers", methods=["GET"])
 @authenticate(token_auth)
 @paginated_response(users_schema, order_by=User.username)
 def my_followers():
@@ -94,11 +94,10 @@ def my_followers():
     return user.followers_select()
 
 
-@users.route('/me/following/<int:id>', methods=['GET'])
+@users.route("/me/following/<int:id>", methods=["GET"])
 @authenticate(token_auth)
-@response(EmptySchema, status_code=204,
-          description='User is followed.')
-@other_responses({404: 'User is not followed'})
+@response(EmptySchema, status_code=204, description="User is followed.")
+@other_responses({404: "User is not followed"})
 def is_followed(id):
     """Check if a user is followed"""
     user = token_auth.current_user()
@@ -108,11 +107,10 @@ def is_followed(id):
     return {}
 
 
-@users.route('/me/following/<int:id>', methods=['POST'])
+@users.route("/me/following/<int:id>", methods=["POST"])
 @authenticate(token_auth)
-@response(EmptySchema, status_code=204,
-          description='User followed successfully.')
-@other_responses({404: 'User not found', 409: 'User already followed.'})
+@response(EmptySchema, status_code=204, description="User followed successfully.")
+@other_responses({404: "User not found", 409: "User already followed."})
 def follow(id):
     """Follow a user"""
     user = token_auth.current_user()
@@ -124,11 +122,10 @@ def follow(id):
     return {}
 
 
-@users.route('/me/following/<int:id>', methods=['DELETE'])
+@users.route("/me/following/<int:id>", methods=["DELETE"])
 @authenticate(token_auth)
-@response(EmptySchema, status_code=204,
-          description='User unfollowed successfully.')
-@other_responses({404: 'User not found', 409: 'User is not followed.'})
+@response(EmptySchema, status_code=204, description="User unfollowed successfully.")
+@other_responses({404: "User not found", 409: "User is not followed."})
 def unfollow(id):
     """Unfollow a user"""
     user = token_auth.current_user()
@@ -140,21 +137,31 @@ def unfollow(id):
     return {}
 
 
-@users.route('/users/<int:id>/following', methods=['GET'])
+@users.route("/users/<int:id>/following", methods=["GET"])
 @authenticate(token_auth)
 @paginated_response(users_schema, order_by=User.username)
-@other_responses({404: 'User not found'})
+@other_responses({404: "User not found"})
 def following(id):
     """Retrieve the users this user is following"""
     user = db.session.get(User, id) or abort(404)
     return user.following_select()
 
 
-@users.route('/users/<int:id>/followers', methods=['GET'])
+@users.route("/users/<int:id>/followers", methods=["GET"])
 @authenticate(token_auth)
 @paginated_response(users_schema, order_by=User.username)
-@other_responses({404: 'User not found'})
+@other_responses({404: "User not found"})
 def followers(id):
     """Retrieve the followers of the user"""
     user = db.session.get(User, id) or abort(404)
     return user.followers_select()
+
+
+@users.route("/users/<int:id>/newsletter", methods=["GET"])
+@authenticate(token_auth)
+@paginated_response(users_schema, order_by=User.username)
+@other_responses({404: "User not found"})
+def newsletter(id):
+    """Retrieve the followers of the user"""
+    user = db.session.get(User, id) or abort(404)
+    return user.newsletter

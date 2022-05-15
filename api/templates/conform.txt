@@ -1,0 +1,10 @@
+Dear {{ username }},
+
+It is official you joined the crew!
+
+
+Sincerely,
+
+The Sail.Black Crew
+
+Note: replies to this email address are not monitored.
