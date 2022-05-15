@@ -26,7 +26,6 @@ def newsletter_conformation(args):
     link = url_for("index", _external=True) + "api/newsletter/" + token
     send_email(email, "Confirm subscription", "newsletter", token=token, url=link)
     u.confirmed = False
-    u.confirm_token = token
     u.ping()
     error = None
     try:
@@ -63,8 +62,7 @@ def newsletter_leave(args):
     u = db.session.scalar(Newsletter.select().filter_by(email=args["email"]))
     email = u.email
     token = s.dumps(email, salt="sign-off-confirm")
-    link = url_for("index", _external=True) + "api/newsletter/leave/" + token
-    u.leave_token = token
+    link = url_for("index", _external=True) + "api/newsletter/leave/" + token #change here for react_front_end
     u.ping()
     db.session.add(u)
     db.session.commit()
@@ -75,7 +73,7 @@ def newsletter_leave(args):
     return {"user": args["email"], "newsletter_status": u.confirmed, "error": error}
 
 
-@newsletter.route("/newsletter/leave/<auth>")
+@newsletter.route("/newsletter/leave/<auth>", methods=["POST"])
 @other_responses({400: "Invalid newsletter token"})
 def newsletter_leave_conform(auth):
     """Confirm the newsletter subscription"""

@@ -76,8 +76,6 @@ class NewsletterSchema(ma.SQLAlchemySchema):
     sign_up = ma.auto_field(dump_only=True)
     confirmed = ma.Bool(dump_only=True)
     updated = ma.auto_field(dump_only=True)
-    confirm_token = ma.auto_field(dump_only=True)
-    leave_token = ma.auto_field(dump_only=True)
 
 
 class UserSchema(ma.SQLAlchemySchema):
