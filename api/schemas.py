@@ -159,6 +159,16 @@ class PasswordResetRequestSchema(ma.Schema):
     )
 
 
+class NewsletterResetRequestSchema(ma.Schema):
+    class Meta:
+        ordered = True
+
+    email = ma.String(
+        required=True, validate=[validate.Length(max=120), validate.Email()]
+    )
+    email = ma.String(required=True, validate=[validate.Length(max=60)])
+
+
 class PasswordResetSchema(ma.Schema):
     class Meta:
         ordered = True

@@ -8,6 +8,7 @@ from api.email import send_email
 from api.models import Newsletter
 from api.schemas import (
     PasswordResetRequestSchema,
+    NewsletterResetRequestSchema,
     NewsletterSchema,
 )
 
@@ -23,7 +24,7 @@ def newsletter_conformation(args):
     u = Newsletter(email=args["email"])
     email = u.email
     token = s.dumps(email, salt="email-confirm")
-    link = "www.sail.black/" + "?token=" + token + "&email=" + email
+    link = "www.sail.black/newsletter/" + "?token=" + token + "&email=" + email
     send_email(email, "Confirm subscription", "newsletter", token=token, url=link)
     u.confirmed = False
     u.ping()
@@ -55,7 +56,7 @@ def newsletter_conform(auth):
 
 
 @newsletter.route("/newsletter/leave", methods=["GET", "POST"])
-@body(PasswordResetRequestSchema)
+@body(NewsletterResetRequestSchema)
 def newsletter_leave(args):
     """Request a newsletter conformation token"""
     s = Newsletter.get_seralizer()
