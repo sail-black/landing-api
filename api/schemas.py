@@ -76,6 +76,7 @@ class NewsletterSchema(ma.SQLAlchemySchema):
     sign_up = ma.auto_field(dump_only=True)
     confirmed = ma.Bool(dump_only=True)
     updated = ma.auto_field(dump_only=True)
+    reason_signoff = ma.auto_field(dump_only=True, validate=[validate.Length(max=60)
 
 
 class UserSchema(ma.SQLAlchemySchema):

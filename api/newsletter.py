@@ -61,6 +61,7 @@ def newsletter_leave(args):
     s = Newsletter.get_seralizer()
     u = db.session.scalar(Newsletter.select().filter_by(email=args["email"]))
     email = u.email
+    u.reason_signoff = args["reason"]
     token = s.dumps(email, salt="sign-off-confirm")
     link = (
         "www.sail.black/" + "newsletter/leave/?token=" + token + "&email=" + email
