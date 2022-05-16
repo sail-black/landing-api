@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for, render_template_string
+from flask import Blueprint, render_template_string
 from apifairy import body, other_responses
 from itsdangerous import SignatureExpired
 

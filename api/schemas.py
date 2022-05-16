@@ -166,7 +166,7 @@ class NewsletterResetRequestSchema(ma.Schema):
     email = ma.String(
         required=True, validate=[validate.Length(max=120), validate.Email()]
     )
-    email = ma.String(required=True, validate=[validate.Length(max=60)])
+    reason = ma.String(required=True, validate=[validate.Length(max=60)])
 
 
 class PasswordResetSchema(ma.Schema):
