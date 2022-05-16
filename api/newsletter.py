@@ -65,7 +65,11 @@ def newsletter_leave(args):
     u.reason_signoff = args["reason"]
     token = s.dumps(email, salt="sign-off-confirm")
     link = (
-        "www.sail.black/" + "newsletter/leave/?token=" + token + "&email=" + email
+        "www.sail.black/"
+        + "newsletter/leave/confirm/?token="
+        + token
+        + "&email="
+        + email
     )  # change here for react_front_end
     u.ping()
     db.session.add(u)
