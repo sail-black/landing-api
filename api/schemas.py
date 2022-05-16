@@ -76,8 +76,7 @@ class NewsletterSchema(ma.SQLAlchemySchema):
     sign_up = ma.auto_field(dump_only=True)
     confirmed = ma.Bool(dump_only=True)
     updated = ma.auto_field(dump_only=True)
-    confirm_token = ma.auto_field(dump_only=True)
-    leave_token = ma.auto_field(dump_only=True)
+    reason_signoff = ma.auto_field(dump_only=True, validate=[validate.Length(max=60)])
 
 
 class UserSchema(ma.SQLAlchemySchema):
@@ -158,6 +157,16 @@ class PasswordResetRequestSchema(ma.Schema):
     email = ma.String(
         required=True, validate=[validate.Length(max=120), validate.Email()]
     )
+
+
+class NewsletterResetRequestSchema(ma.Schema):
+    class Meta:
+        ordered = True
+
+    email = ma.String(
+        required=True, validate=[validate.Length(max=120), validate.Email()]
+    )
+    reason = ma.String(required=True, validate=[validate.Length(max=60)])
 
 
 class PasswordResetSchema(ma.Schema):
