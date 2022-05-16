@@ -23,7 +23,7 @@ def newsletter_conformation(args):
     u = Newsletter(email=args["email"])
     email = u.email
     token = s.dumps(email, salt="email-confirm")
-    link = url_for("index", _external=True) + "api/newsletter/" + token
+    link = "www.sail.black/" + "newsletter/:" + token
     send_email(email, "Confirm subscription", "newsletter", token=token, url=link)
     u.confirmed = False
     u.ping()
@@ -62,7 +62,9 @@ def newsletter_leave(args):
     u = db.session.scalar(Newsletter.select().filter_by(email=args["email"]))
     email = u.email
     token = s.dumps(email, salt="sign-off-confirm")
-    link = url_for("index", _external=True) + "api/newsletter/leave/" + token #change here for react_front_end
+    link = (
+        "www.sail.black/" + "newsletter/leave/:" + token
+    )  # change here for react_front_end
     u.ping()
     db.session.add(u)
     db.session.commit()
