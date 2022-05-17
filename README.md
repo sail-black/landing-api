@@ -3,17 +3,10 @@
 [![Build status](https://github.com/miguelgrinberg/microblog-api/workflows/build/badge.svg)](https://github.com/miguelgrinberg/microblog-api/actions) 
 [![codecov](https://codecov.io/gh/sail-black/landing-api/branch/main/graph/badge.svg?token=T7HGNH8VJK)](https://codecov.io/gh/sail-black/landing-api)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![Style Black](https://warehouse-camo.ingress.cmh1.psfhosted.org/fbfdc7754183ecf079bc71ddeabaf88f6cbc5c00/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f636f64652532307374796c652d626c61636b2d3030303030302e737667) 
+![Style Black](https://img.shields.io/badge/code%20style-black-black) 
 
 
 A modern (as of 2022) Flask API back end for building landing pages for SaaS and newsletter sign up.
-
-## Deploy to Heroku
-
-Click the button below to deploy the application directly to your Heroku
-account.
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/miguelgrinberg/microblog-api/tree/heroku)
 
 ## Deploy on your Computer
 
@@ -23,7 +16,7 @@ Follow these steps if you want to run this application on your computer, either
 in a Docker container or as a standalone Python application.
 
 ```bash
-git clone https://github.com/miguelgrinberg/microblog-api
+git clone https://github.com/sail-black/landing-api
 cd microblog-api
 cp .env.example .env
 ```
