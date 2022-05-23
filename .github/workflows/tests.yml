@@ -60,6 +60,7 @@ jobs:
         env:
          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   deploy:
+
     name: Push to EC2 Instance
     runs-on: ubuntu-latest
 
@@ -75,7 +76,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.TARGET }}
-    - name: multiple command
+    name: multiple command
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
