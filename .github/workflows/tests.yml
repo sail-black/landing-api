@@ -76,7 +76,7 @@ jobs:
           TARGET:  ${{ secrets.TARGET }}
           SESSION: ${{ secrets.SESSION }}
         run: |
-             ssh -i $SSH_PRIVATE_KEY $REMOTE_USER@$REMOTE_HOST 
+             ssh -i "$SSH_PRIVATE_KEY" "$REMOTE_USER"@"$REMOTE_HOST" 
              cd $TARGET 
              git fetch 
              git pull 
