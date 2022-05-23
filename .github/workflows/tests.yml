@@ -59,3 +59,27 @@ jobs:
         if: always()
         env:
          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  deploy:
+    name: Push to EC2 Instance and run application 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v1
+
+      - name: Deploy to my EC2 instance
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          SOURCE: ${{ secrets.SOURCE }}
+          REMOTE_HOST:  ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER:  ${{ secrets.REMOTE_USER }}
+          TARGET:  ${{ secrets.TARGET }}
+          SESSION: ${{ secrets.SESSION }}
+        run: |
+             ssh -i $SSH_PRIVATE_KEY $REMOTE_USER@$REMOTE_HOST 
+             cd $TARGET 
+             git fetch 
+             git pull 
+
+
+

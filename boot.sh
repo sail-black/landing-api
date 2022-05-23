@@ -1,3 +1,2 @@
 #!/bin/sh
-flask db upgrade
-exec gunicorn -b :8080 --access-logfile - --error-logfile - microblog:app
+exec gunicorn -b :8080 --access-logfile access.log --error-logfile error.log microblog:app
