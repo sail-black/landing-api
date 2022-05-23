@@ -80,6 +80,9 @@ jobs:
              cd $TARGET 
              git fetch 
              git pull 
+             tmux kill-ses -t $SESSION
+             tmux new-session -d -s $SESSION 'bash boot.sh' 
 
+x 
 
 
