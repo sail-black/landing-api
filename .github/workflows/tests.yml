@@ -77,15 +77,14 @@ jobs:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.TARGET }}
     name: multiple command
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.KEY }}
-        port: ${{ secrets.PORT }}
-        script: |
-                whoami
-                ls -al
+    uses: appleboy/ssh-action@master
+    with:
+      host: ${{ secrets.REMOTE_HOST }}
+      username: ${{ secrets.REMOTE_USERNAME }}
+      key: ${{ secrets.SSH_PRIVATE_KEY }}
+      script: |
+              whoami
+              ls -al
 
 
       
