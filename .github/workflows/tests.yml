@@ -59,25 +59,41 @@ jobs:
         if: always()
         env:
          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-  deploy:
-    name: Push to EC2 Instance and run application 
+  deploy:    
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout the code
-        uses: actions/checkout@v1
+      - name: Reset Permissions before deployment
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            sudo chmod -R 755 /path/in/your/server
+            sudo chown -R username:username /path/in/your/server
+            sudo setfacl -R -m u:www-data:rwx /path/in/your/server 
 
-      - name: Deploy to my EC2 instance
+      - uses: actions/checkout@v2
+      - name: Deploy source-code
+        uses: appleboy/scp-action@master
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SOURCE: ${{ secrets.SOURCE }}
-          REMOTE_HOST:  ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER:  ${{ secrets.REMOTE_USER }}
-          TARGET:  ${{ secrets.TARGET }}
-          SESSION: ${{ secrets.SESSION }}
-        run: |
-             echo $SSH_PRIVATE_KEY >> identity.pem
-             chmod 400 identity.pem
-             ssh-add identity.pem
-             
-            
+          HOST: ${{ secrets.SSH_HOST }}
+          USERNAME: ${{ secrets.SSH_USERNAME }}
+          PORT: 22
+          KEY: ${{ secrets.SSH_KEY }}
+        with:
+          source: "*"
+          target: "/path/in/your/server"
+
+      - name: Reset Permissions after deployment
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            sudo chmod -R 755 /path/in/your/server
+            sudo chown -R www-data:www-data /path/in/your/server
+            sudo setfacl -R -m u:username:rwx /path/in/your/server
