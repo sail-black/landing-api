@@ -62,38 +62,17 @@ jobs:
   deploy:    
     runs-on: ubuntu-latest
     steps:
-      - name: Reset Permissions before deployment
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          script: |
-            sudo chmod -R 755 /path/in/your/server
-            sudo chown -R username:username /path/in/your/server
-            sudo setfacl -R -m u:www-data:rwx /path/in/your/server 
 
       - uses: actions/checkout@v2
       - name: Deploy source-code
         uses: appleboy/scp-action@master
         env:
-          HOST: ${{ secrets.SSH_HOST }}
-          USERNAME: ${{ secrets.SSH_USERNAME }}
+          HOST: ${{ secrets.REMOTE_HOST }}
+          USERNAME: ${{ secrets.REMOTE_USER }}
           PORT: 22
-          KEY: ${{ secrets.SSH_KEY }}
+          KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         with:
           source: "*"
-          target: "/path/in/your/server"
+          target: "./"
 
-      - name: Reset Permissions after deployment
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          script: |
-            sudo chmod -R 755 /path/in/your/server
-            sudo chown -R www-data:www-data /path/in/your/server
-            sudo setfacl -R -m u:username:rwx /path/in/your/server
+      
